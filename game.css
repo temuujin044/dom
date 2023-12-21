@@ -3,15 +3,47 @@
   margin: 0;
   padding: 0;
 }
-
 #root {
-  width: auto;
-  background-color: aqua;
+  height: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .initialPage {
   width: 400px;
   height: 400px;
-  background-color: aqua;
+  background-color: #89abe3;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+  gap: 30px;
+}
+.initialPage button {
+  width: 100px;
+  height: 40px;
+  background-color: #ea738d;
+  border: 1px solid #fcedda;
+  border-radius: 3px;
+}
+.gamePage {
+  padding: 50px;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.gamePage div {
+  max-width: 1300px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 /* #root {

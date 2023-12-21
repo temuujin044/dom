@@ -1,0 +1,10 @@
+#root {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin: auto;
+}
+p {
+  width: 300px;
+}

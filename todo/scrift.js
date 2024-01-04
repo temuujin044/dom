@@ -11,20 +11,7 @@ function createTag(tagName, tagClass, tagId) {
 let boardName = [
   {
     title: "Todo",
-    arr: [
-      {
-        title: "task1",
-        description: "desc",
-        priority: "Medium",
-        level: 1,
-      },
-      {
-        title: "task2",
-        description: "desc",
-        priority: "High",
-        level: 2,
-      },
-    ],
+    arr: [],
   },
   {
     title: "Inprocess",
@@ -41,55 +28,10 @@ let boardName = [
 ];
 let priority = ["Low", "Medium", "High"];
 const root = document.getElementById("root");
-// new container
-const logo = createTag("div", "logo");
-const logoImg = createTag("img");
-logoImg.setAttribute(
-  "src",
-  "https://assets-global.website-files.com/64d1a97b791d8ca9bb004633/64d341b746d118ef09197a8e_Logo.svg"
-);
-logo.appendChild(logoImg);
-root.appendChild(logo);
-const header = createTag("div", "header");
-const headerTitle = createTag("h2");
-headerTitle.innerText = "Leap 1E class";
-const editTitle = createTag("i");
-editTitle.setAttribute("class", "fa-regular fa-pen-to-square");
-editTitle.addEventListener("click", () => {
-  let editTit = prompt("Please enter your title", headerTitle.innerText);
-  while (editTit == "") {
-    editTit = prompt("Please enter your title");
-  }
-  headerTitle.innerText = editTit;
-});
-const addBoard = createTag("div", "addBoard");
-const addBoardIcon = createTag("i");
-addBoardIcon.setAttribute("class", "fa-solid fa-plus");
-const addBoardSpan = createTag("p");
-addBoardIcon.innerText = "Add board";
-addBoard.appendChild(addBoardIcon);
-addBoard.appendChild(addBoardSpan);
-addBoard.addEventListener("click", () => {
-  let addBoardName = prompt("Please enter your boarName");
-  while (addBoardName == "") {
-    addBoardName = prompt("Please enter your boarName");
-  }
-  let v = boardName.pop();
-  boardName.push({ title: addBoardName, arr: [] });
-  boardName.push(v);
-  console.log(boardName);
-  renderStatus();
-  refresh();
-  // headerTitle.innerText = addBoardName;
-});
-// addBoard.innerHTML = addBoardIcon + " Add board";
-header.appendChild(headerTitle);
-header.appendChild(editTitle);
-header.appendChild(addBoard);
 const container = createTag("div", "container");
 root.appendChild(container);
 // new boards
-container.appendChild(header);
+
 const boards = createTag("div", "boards");
 container.appendChild(boards);
 
@@ -430,19 +372,7 @@ function editForm(num1, num2) {
     }
   });
 }
-function renderStatus() {
-  stat.innerHTML = "";
-  statInput.innerHTML = "";
-  for (let j = 0; j < boardName.length; j++) {
-    const statOption = createTag("option");
-    statOption.setAttribute("value", j);
-    statOption.innerText = boardName[j].title;
-    count++;
-    statInput.appendChild(statOption);
-  }
-  stat.appendChild(statInput);
-}
-
+let dragIndex1, dragIndex2;
 function refresh() {
   boards.innerHTML = "";
   // console.log(boardName);
@@ -450,6 +380,13 @@ function refresh() {
     // for(i=0; i<boarname.length;i++)
     // console.log("hi=", e.title);
     const board = createTag("div", "board");
+    board.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+    board.addEventListener("drop", (e) => {
+      e.preventDefault();
+      addDragCard(boardIndex);
+    });
     const boardHead = createTag("div", "board-header");
     // boardHead.innerText =
     const boardLength = createTag("p");
@@ -469,7 +406,11 @@ function refresh() {
     titleIcons.appendChild(titleRemove);
     titleIcons.appendChild(titleEdit);
     titleEdit.addEventListener("click", () => {
-      editBoardTitle(boardIndex);
+      if (boardIndex == boardName.length - 1) {
+        alert("Done өөрчлөх боломжгүй");
+      } else {
+        editBoardTitle(boardIndex);
+      }
     });
     boardHead.appendChild(boardLength);
     boardHead.appendChild(titleIcons);
@@ -487,6 +428,13 @@ function refresh() {
     e.arr.map((event, indi) => {
       console.log("index", indi);
       const card = createTag("div", "card");
+      card.setAttribute("draggable", "true");
+      card.addEventListener("dragstart", () => {
+        // ev.preventDefault();
+        dragIndex1 = boardIndex;
+        dragIndex2 = indi;
+        // console.log(dragIndex1, dragIndex2);
+      });
       const detail = createTag("div", "card-details");
       const detailTitle = createTag("h4", "detail-title");
       detailTitle.innerText = event.title;
@@ -516,7 +464,7 @@ function refresh() {
       removeIcon.setAttribute("class", "fa-solid fa-x");
       remove.appendChild(removeIcon);
       remove.addEventListener("click", () => {
-        e.arr.splice(indi, 1);
+        removeCard(boardIndex, indi);
         refresh();
       });
       // const remove = createTag("div", "remove");
@@ -567,6 +515,16 @@ function editBoardTitle(boardIndex) {
   }
   console.log({ boardName });
   boardName[boardIndex].title = editTit;
+  refresh();
+}
+function removeCard(boardIndex, indi) {
+  boardName[boardIndex].arr.splice(indi, 1);
+  refresh();
+}
+function addDragCard(index) {
+  let dragItem = boardName[dragIndex1].arr[dragIndex2];
+  boardName[dragIndex1].arr.splice(dragIndex2, 1);
+  boardName[index].arr.push(dragItem);
   refresh();
 }
 refresh();

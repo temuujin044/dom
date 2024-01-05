@@ -94,6 +94,7 @@ function findAboveAvg(prods) {
     return a.price > avgPrice;
   });
   //   console.log("count:", count);
+  // 123
   return filterdProd;
 }
 

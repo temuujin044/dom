@@ -30,3 +30,8 @@ let priotity = ["Low", "Medium", "High"];
 const root = document.getElementById("root");
 const container = createTag("div", "container");
 root.appendChild(container);
+
+// newBoards
+
+const boards = createTag("div", "boards");
+container.appendChild(boards);
